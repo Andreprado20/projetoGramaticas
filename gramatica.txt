@@ -1,4 +1,4 @@
-S -> AB|BC|A|B|C|ε
-A -> a|ε
-B -> b|ε
+S -> AB | BC | ε
+A -> a | ε
+B -> b | ε
 C -> c
