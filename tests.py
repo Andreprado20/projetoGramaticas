@@ -33,25 +33,46 @@ def leituraGramatica(nomeArquivo):
     # gramatica.popitem()
     # for value in gramatica.items():
     #     print(value)
-    print("Gramática antes:", gramatica)
+    # print("Gramática antes:", gramatica)
 
-    x = list(dict.values(gramatica))
+    # x = list(dict.values(gramatica))
+    # # print(x)
+    # # print(x[0])
+    # # x[0].remove('ε')
     # print(x)
     # print(x[0])
-    # x[0].remove('ε')
-    print(x)
-    print(x[0])
 
-    for i in x:
-        if 'ε' in i: 
-            i.remove('ε')
+    # for i in x:
+    #     if 'ε' in i: 
+    #         i.remove('ε')
     
-    print(x)
-    print(x[0])
+    # print(x)
+    # print(x[0])
         
-    print("Gramática depois:", gramatica)
+    # print("Gramática depois:", gramatica)
+    # print("Gramática: ", gramatica)
     return gramatica
 
+def testsWithGrammar(gramatica):
+    producoesVazias = set()
+
+    for simbolo, producoes in gramatica.items():
+        if 'ε' in producoes:
+            producoesVazias.add(simbolo)
+
+    for producao in producoesVazias:
+        if 'AB' in gramatica[producao]:
+            gramatica[producao].append('AB')
+        print(producao, '->', gramatica[producao])
+
+    
+
+    print(producoesVazias)
+    print(gramatica)
+
+
+
+    return producoesVazias
 
 # def escrever_gramatica_no_arquivo(gramatica, nome_arquivo):
 #     with open(nome_arquivo, 'w') as arquivo:
@@ -63,6 +84,8 @@ def leituraGramatica(nomeArquivo):
 #     gramatica = ler_gramatica_do_arquivo(nome_arquivo_entrada)
 #     escrever_gramatica_no_arquivo(gramatica, nome_arquivo_saida)
 
-leituraGramatica('gramatica.txt')
+grammar = leituraGramatica('gramatica.txt')
+
+testsWithGrammar(grammar)
 
 # print(leituraGramatica('gramatica.txt'))
