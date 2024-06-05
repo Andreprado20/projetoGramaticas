@@ -1,0 +1,7 @@
+S -> A B | B C
+X0 -> a
+A -> X0 A | a
+X1 -> b
+B -> X1 B | b
+X2 -> c
+C -> X2 C | c
