@@ -1,4 +1,5 @@
-S -> A B | B C
-A -> a A | a
-B -> b B | b
-C -> c C | c
+S -> BC
+A -> bB | cD | c
+B -> cC | b
+C -> AA
+D -> d
