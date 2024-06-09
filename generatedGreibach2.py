@@ -1,42 +1,71 @@
 import re
-from collections import defaultdict, deque
+from collections import defaultdict
 
 def read_grammar(input_file):
     grammar = defaultdict(list)
     with open(input_file, 'r') as file:
+        variables = file.readline().strip().split()
         for line in file:
             line = line.strip()
             if not line or '->' not in line:
                 continue
-            lhs, rhs = line.split('->')
+            lhs, rhs = line.split(' -> ')
             lhs = lhs.strip()
-            rhs = rhs.strip().split('|')
+            rhs = rhs.strip().split(' | ')
             for production in rhs:
-                grammar[lhs].append(production.strip())
-    return grammar
+                production = production.strip().replace('ε', '')
+                grammar[lhs].append(production)
+    return grammar, variables
 
 def write_grammar(output_file, grammar):
     with open(output_file, 'w') as file:
         for lhs, productions in grammar.items():
             file.write(f"{lhs} -> {' | '.join(productions)}\n")
 
+def remove_empty_productions(grammar):
+    nullable = set()
+    for lhs, productions in grammar.items():
+        for production in productions:
+            if production == '':
+                nullable.add(lhs)
+
+    while True:
+        new_nullable = set()
+        for lhs, productions in grammar.items():
+            for production in productions:
+                if all(symbol in nullable for symbol in production):
+                    new_nullable.add(lhs)
+        if new_nullable <= nullable:
+            break
+        nullable |= new_nullable
+
+    new_grammar = defaultdict(list)
+    for lhs, productions in grammar.items():
+        for production in productions:
+            if production == '':
+                continue
+            new_grammar[lhs].append(production)
+            for nullable_symbol in nullable:
+                if nullable_symbol in production:
+                    new_production = production.replace(nullable_symbol, '')
+                    if new_production and new_production not in new_grammar[lhs]:
+                        new_grammar[lhs].append(new_production)
+    return new_grammar
+
 def remove_unit_productions(grammar):
-    unit_productions = defaultdict(set)
-    for lhs, rhs_list in grammar.items():
-        for rhs in rhs_list:
-            if re.fullmatch(r'[A-Z]', rhs):
-                unit_productions[lhs].add(rhs)
-    
-    while unit_productions:
-        lhs, rhs_set = unit_productions.popitem()
-        for rhs in rhs_set:
-            if rhs in grammar:
-                for production in grammar[rhs]:
-                    if production not in unit_productions[lhs] and production != lhs:
-                        grammar[lhs].append(production)
-                        if re.fullmatch(r'[A-Z]', production):
-                            unit_productions[lhs].add(production)
-        grammar[lhs] = [prod for prod in grammar[lhs] if not re.fullmatch(r'[A-Z]', prod)]
+    changed = True
+    while changed:
+        changed = False
+        for lhs in list(grammar.keys()):
+            new_productions = []
+            for rhs in grammar[lhs]:
+                if re.fullmatch(r'[A-Za-z]', rhs) and rhs in grammar:
+                    changed = True
+                    new_productions.extend(grammar[rhs])
+                else:
+                    new_productions.append(rhs)
+            if new_productions != grammar[lhs]:
+                grammar[lhs] = new_productions
     return grammar
 
 def to_cnf(grammar):
@@ -62,7 +91,7 @@ def to_cnf(grammar):
             if re.fullmatch(r'[a-z]', rhs):
                 new_grammar[lhs].append(rhs)
             else:
-                rhs_tokens = re.findall(r'[a-z]|[A-Z]+', rhs)
+                rhs_tokens = re.findall(r'[a-z]|[A-Za-z]+', rhs)
                 new_rhs = []
 
                 for token in rhs_tokens:
@@ -149,17 +178,19 @@ def to_gnf(grammar):
     return gnf_grammar
 
 def convert_to_gnf(input_file, output_file):
-    grammar = read_grammar(input_file)
-    print(grammar)
+    grammar, variables = read_grammar(input_file)
+    print("Grammar read from file:", grammar)
+    grammar = remove_empty_productions(grammar)
+    print("After removing empty productions:", grammar)
     grammar = remove_unit_productions(grammar)
-    print(grammar)
+    print("After removing unit productions:", grammar)
     grammar = to_cnf(grammar)
-    print(grammar)
+    print("After converting to CNF:", grammar)
     grammar = to_gnf(grammar)
-    print(grammar)
+    print("After converting to GNF:", grammar)
     write_grammar(output_file, grammar)
 
-# Example usage
-input_file = 'gramatica_limpa.txt'
-output_file = 'gramaticaLimpaNaFNG.txt'
+# Exemplo de uso
+input_file = 'gramatica2.txt'
+output_file = 'output_gnf_grammar.txt'
 convert_to_gnf(input_file, output_file)

@@ -1,5 +1,2 @@
-S -> BC
-A -> bB | cD | c
-B -> cC | b
-C -> AA
-D -> d
+S -> aA | ε
+A -> bBaA | ε

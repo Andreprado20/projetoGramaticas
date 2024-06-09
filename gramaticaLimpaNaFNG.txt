@@ -1,7 +1,7 @@
-A -> bB | cD | c
-B -> cC | b
-C -> bBA | cDA | cA
-D -> d
-S -> cCC | bC
-X1 -> b
-X2 -> c
+A -> bBX1 | bBX1A
+S -> a | aA
+X1 -> a
+X2 -> b
+X3 -> bB
+X4 -> bB
+X5 -> bBX1

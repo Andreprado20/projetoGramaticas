@@ -1,5 +1,2 @@
-S -> A B C D
-A -> a A
-B -> b B
-C -> c C
-D -> C A
+S -> ε | aA
+A -> ε | bBaA

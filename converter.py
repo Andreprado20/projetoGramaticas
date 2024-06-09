@@ -44,13 +44,13 @@ def ler_gramatica_do_arquivo(nome_arquivo):
     with open(nome_arquivo, 'r') as arquivo:
         for linha in arquivo:
             simbolo, producoes = linha.strip().split(' -> ')
-            gramatica[simbolo] = producoes.split('|')
+            gramatica[simbolo] = producoes.split(' | ')
     return gramatica
 
 def escrever_gramatica_no_arquivo(gramatica, nome_arquivo):
     with open(nome_arquivo, 'w') as arquivo:
         for simbolo, producoes in gramatica.items():
-            arquivo.write(simbolo + ' -> ' + '|'.join(producoes) + '\n')
+            arquivo.write(simbolo + ' -> ' + ' | '.join(producoes) + '\n')
 
 def limpar_gramatica(nome_arquivo_entrada, nome_arquivo_saida):
     gramatica = ler_gramatica_do_arquivo(nome_arquivo_entrada)

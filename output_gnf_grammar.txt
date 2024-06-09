@@ -1,7 +1,0 @@
-A -> bB | cD | c
-B -> cC | b
-C -> bBA | cDA | cA
-D -> d
-S -> cCC | bC
-X1 -> b
-X2 -> c
