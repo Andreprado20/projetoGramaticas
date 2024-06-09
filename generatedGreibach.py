@@ -157,5 +157,5 @@ def convert_to_gnf(input_file, output_file):
 
 # Example usage
 input_file = 'gramatica.txt'
-output_file = 'output_gnf_grammar.txt'
+output_file = 'gramaticaLimpaNaFNG.txt'
 convert_to_gnf(input_file, output_file)
