@@ -1,0 +1,13 @@
+A -> bX1A | bBX1 | bX1 | bBX1A
+B -> cCB' | bB'
+B' -> cCB'B' | bB'B' | 
+C -> bX1AX1C' | bBX1X1C' | bX1X1C' | bBX1AX1C' | cC' | aC'
+C' -> bX1AX1C'C' | bBX1X1C'C' | bX1X1C'C' | bBX1AX1C'C' | cC'C' | aC'C' | 
+S -> aA | a
+X1 -> a
+X2 -> b
+X3 -> bX1
+X4 -> bB
+X5 -> bB
+X6 -> bBX1
+X7 -> c

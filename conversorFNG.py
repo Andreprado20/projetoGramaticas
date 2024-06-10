@@ -18,7 +18,8 @@ def read_grammar(input_file):
 def write_grammar(output_file, grammar):
     with open(output_file, 'w') as file:
         for lhs, productions in grammar.items():
-            file.write(f"{lhs} -> {' | '.join(productions)}\n")
+            direita = ' | '.join(productions)
+            file.write(f"{lhs} -> {direita}\n")
 
 def remove_unit_productions(grammar):
     unit_productions = defaultdict(set)
@@ -140,13 +141,19 @@ def to_gnf(grammar):
             else:
                 new_rhs = rhs
                 while not re.match(r'^[a-z]', new_rhs):
+                    # Guardar o estado original do new_rhs para verificar o progresso
+                    original_new_rhs = new_rhs
                     for B in non_terminals:
                         if new_rhs.startswith(B):
                             new_rhs = new_rhs.replace(B, grammar[B][0], 1)
                             break
+                    # Se new_rhs não mudou, então não foi possível fazer uma substituição válida
+                    if new_rhs == original_new_rhs:
+                        break
                 gnf_grammar[A].append(new_rhs)
 
     return gnf_grammar
+
 
 def convert_to_gnf(input_file, output_file):
     grammar = read_grammar(input_file)
