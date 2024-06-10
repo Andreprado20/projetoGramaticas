@@ -1,5 +1,5 @@
 S -> aA | ε
 A -> bBaA | ε
 B -> BB | cC | b | ε
-C -> CC | c | Aa
+C -> CC | c | Aa | ε
 D -> Ba | d
