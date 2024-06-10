@@ -21,24 +21,24 @@ def write_grammar(output_file, grammar):
             direita = ' | '.join(productions)
             file.write(f"{lhs} -> {direita}\n")
 
-def remove_unit_productions(grammar):
-    unit_productions = defaultdict(set)
-    for lhs, rhs_list in grammar.items():
-        for rhs in rhs_list:
-            if re.fullmatch(r'[A-Z]', rhs):
-                unit_productions[lhs].add(rhs)
+# def remove_unit_productions(grammar):
+#     unit_productions = defaultdict(set)
+#     for lhs, rhs_list in grammar.items():
+#         for rhs in rhs_list:
+#             if re.fullmatch(r'[A-Z]', rhs):
+#                 unit_productions[lhs].add(rhs)
     
-    while unit_productions:
-        lhs, rhs_set = unit_productions.popitem()
-        for rhs in rhs_set:
-            if rhs in grammar:
-                for production in grammar[rhs]:
-                    if production not in unit_productions[lhs] and production != lhs:
-                        grammar[lhs].append(production)
-                        if re.fullmatch(r'[A-Z]', production):
-                            unit_productions[lhs].add(production)
-        grammar[lhs] = [prod for prod in grammar[lhs] if not re.fullmatch(r'[A-Z]', prod)]
-    return grammar
+#     while unit_productions:
+#         lhs, rhs_set = unit_productions.popitem()
+#         for rhs in rhs_set:
+#             if rhs in grammar:
+#                 for production in grammar[rhs]:
+#                     if production not in unit_productions[lhs] and production != lhs:
+#                         grammar[lhs].append(production)
+#                         if re.fullmatch(r'[A-Z]', production):
+#                             unit_productions[lhs].add(production)
+#         grammar[lhs] = [prod for prod in grammar[lhs] if not re.fullmatch(r'[A-Z]', prod)]
+#     return grammar
 
 def to_cnf(grammar):
     new_grammar = defaultdict(list)
@@ -158,7 +158,7 @@ def to_gnf(grammar):
 def convert_to_gnf(input_file, output_file):
     grammar = read_grammar(input_file)
     print(grammar)
-    grammar = remove_unit_productions(grammar)
+    # grammar = remove_unit_productions(grammar)
     print(grammar)
     grammar = to_cnf(grammar)
     print(grammar)
@@ -167,6 +167,6 @@ def convert_to_gnf(input_file, output_file):
     write_grammar(output_file, grammar)
 
 # Example usage
-input_file = 'gramatica_limpa.txt'
-output_file = 'gramaticaLimpaNaFNG.txt'
-convert_to_gnf(input_file, output_file)
+entrada = 'gramatica_limpa.txt'
+saida = 'gramaticaLimpaNaFNG.txt'
+convert_to_gnf(entrada, saida)
