@@ -1,25 +1,26 @@
 import re
 from collections import defaultdict, deque
 
-def lerGramatica(entrada):
+def lerGramatica(entrada): # Função que vai ler o conteúdo do arquivo .txt de entrada
     gramatica = defaultdict(list)
-    with open(entrada, 'r') as file:
-        for line in file:
+    with open(entrada, 'r') as file: # Abre o arquivo para iniciar a manipulação do mesmo
+        for line in file:            # Repetição para operar em cada linha lida do arquivo
             line = line.strip()
             if not line or '->' not in line:
                 continue
-            lhs, rhs = line.split('->')
+            lhs, rhs = line.split('->')     # Divide cada linha em duas partes: uma antes da seta e outra depois
             lhs = lhs.strip()
-            rhs = rhs.strip().split('|')
+            rhs = rhs.strip().split('|')    # Divide o conteúdo à direita da linha em várias partes de acordo com cada produção separada por '|'
             for production in rhs:
-                gramatica[lhs].append(production.strip())
+                gramatica[lhs].append(production.strip())  # Repetição para adicionar as variáveis resultantes de cada produção
     return gramatica
 
-def escreverGramatica(arquivoSaida, gramatica):
-    with open(arquivoSaida, 'w') as file:
+def escreverGramatica(arquivoSaida, gramatica): # Função que vai escrever o conteúdo resultante no arquivo .txt de saida
+    with open(arquivoSaida, 'w') as file:       # Abre o arquivo para iniciar a manipulação do mesmo
         for lhs, productions in gramatica.items():
-            direita = ' | '.join(productions)
-            file.write(f"{lhs} -> {direita}\n")
+            direita = ' | '.join(productions)       # Estrutura de cada Linha
+            file.write(f"{lhs} -> {direita}\n")     # Escreve no arquivo de saída
+
 
 # def remove_unit_productions(grammar):
 #     unit_productions = defaultdict(set)
@@ -157,13 +158,13 @@ def paraFNG(grammar):
 
 def converterParaFNG(arquivoEntrada, arquivoSaida):
     gramatica = lerGramatica(arquivoEntrada)
-    print(gramatica)
+    # print(gramatica)
     # grammar = remove_unit_productions(grammar)
-    print(gramatica)
+    # print(gramatica)
     gramatica = to_cnf(gramatica)
-    print(gramatica)
+    # print(gramatica)
     gramatica = paraFNG(gramatica)
-    print(gramatica)
+    # print(gramatica)
     escreverGramatica(arquivoSaida, gramatica)
 
 # Example usage
