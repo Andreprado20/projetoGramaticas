@@ -17,6 +17,8 @@ def lerGramatica(entrada): # Função que vai ler o conteúdo do arquivo .txt de
 
 def escreverGramatica(arquivoSaida, gramatica): # Função que vai escrever o conteúdo resultante no arquivo .txt de saida
     with open(arquivoSaida, 'w') as file:       # Abre o arquivo para iniciar a manipulação do mesmo
+        file.write("Produções Convertidas na Forma Normal de Greibach:\n")
+        file.write("  \n")
         for lhs, productions in gramatica.items():
             direita = ' | '.join(productions)       # Estrutura de cada Linha
             file.write(f"{lhs} -> {direita}\n")     # Escreve no arquivo de saída

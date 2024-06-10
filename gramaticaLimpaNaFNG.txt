@@ -1,3 +1,5 @@
+Produções Convertidas na Forma Normal de Greibach:
+  
 A -> bX1A | bBX1 | bX1 | bBX1A
 B -> cCB' | bB'
 B' -> cCB'B' | bB'B' | 
