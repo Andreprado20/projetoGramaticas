@@ -170,6 +170,6 @@ def converterParaFNG(arquivoEntrada, arquivoSaida):
     escreverGramatica(arquivoSaida, gramatica)
 
 # Example usage
-entrada = 'gramatica_limpa.txt'
-saida = 'gramaticaLimpaNaFNG.txt'
+entrada = 'entrada2.txt'
+saida = 'gramaticaLimpaNaFNG2.txt'
 converterParaFNG(entrada, saida)

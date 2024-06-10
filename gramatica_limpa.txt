@@ -1,4 +1,3 @@
-S -> a | aA
-A -> ba | baA | bBaA | bBa
-B -> BB | b | cC
-C -> c | CC | Aa | a
+S -> abB | abA | abAB | ab
+A -> bAB | bA | b | bB
+B -> b | BAa | bAB | bA | a | bB | Aa | Ba

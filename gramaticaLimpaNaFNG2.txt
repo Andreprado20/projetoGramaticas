@@ -1,0 +1,13 @@
+Produções Convertidas na Forma Normal de Greibach:
+  
+E -> aE' | cEX2E' | aX4FE'
+E' -> aE' | 
+F -> a | cEX2
+T -> a | cEX2
+X1 -> c
+X2 -> d
+X3 -> cE
+X4 -> b
+X5 -> aX4 | cEX2X4
+X6 -> cE
+X7 -> cE

@@ -1,15 +1,11 @@
 Produções Convertidas na Forma Normal de Greibach:
   
-A -> bX1 | bX1A | bBX1A | bBX1
-B -> bB' | cCB'
-B' -> bB'B' | cCB'B' | 
-C -> cC' | bX1X1C' | bX1AX1C' | bBX1AX1C' | bBX1X1C' | aC'
-C' -> cC'C' | bX1X1C'C' | bX1AX1C'C' | bBX1AX1C'C' | bBX1X1C'C' | aC'C' | 
-S -> a | aA
+A -> bAB | bA | b | bB
+B -> bB' | bABB' | bAB' | aB' | bBB' | bABX1B' | bAX1B' | bX1B' | bBX1B'
+B' -> bABX1B' | bAX1B' | bX1B' | bBX1B' | aB' | 
+S -> aX2B | aX2A | aX2AB | aX2
 X1 -> a
 X2 -> b
-X3 -> bX1
-X4 -> bB
-X5 -> bBX1
-X6 -> bB
-X7 -> c
+X3 -> aX2
+X4 -> aX2
+X5 -> aX2
