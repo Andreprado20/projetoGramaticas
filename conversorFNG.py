@@ -1,9 +1,9 @@
 import re
 from collections import defaultdict, deque
 
-def read_grammar(input_file):
-    grammar = defaultdict(list)
-    with open(input_file, 'r') as file:
+def lerGramatica(entrada):
+    gramatica = defaultdict(list)
+    with open(entrada, 'r') as file:
         for line in file:
             line = line.strip()
             if not line or '->' not in line:
@@ -12,12 +12,12 @@ def read_grammar(input_file):
             lhs = lhs.strip()
             rhs = rhs.strip().split('|')
             for production in rhs:
-                grammar[lhs].append(production.strip())
-    return grammar
+                gramatica[lhs].append(production.strip())
+    return gramatica
 
-def write_grammar(output_file, grammar):
-    with open(output_file, 'w') as file:
-        for lhs, productions in grammar.items():
+def escreverGramatica(arquivoSaida, gramatica):
+    with open(arquivoSaida, 'w') as file:
+        for lhs, productions in gramatica.items():
             direita = ' | '.join(productions)
             file.write(f"{lhs} -> {direita}\n")
 
@@ -40,7 +40,7 @@ def write_grammar(output_file, grammar):
 #         grammar[lhs] = [prod for prod in grammar[lhs] if not re.fullmatch(r'[A-Z]', prod)]
 #     return grammar
 
-def to_cnf(grammar):
+def to_cnf(gramatica):
     new_grammar = defaultdict(list)
     new_variables = {}
     counter = 1
@@ -58,7 +58,7 @@ def to_cnf(grammar):
             new_grammar[new_var] = [terminal]
         return new_variables[terminal]
 
-    for lhs, productions in grammar.items():
+    for lhs, productions in gramatica.items():
         for rhs in productions:
             if re.fullmatch(r'[a-z]', rhs):
                 new_grammar[lhs].append(rhs)
@@ -81,27 +81,27 @@ def to_cnf(grammar):
 
     return new_grammar
 
-def eliminate_left_recursion(grammar):
-    non_terminals = sorted(grammar.keys())
+def eliminarRecursaoEsquerda(gramatica):
+    non_terminals = sorted(gramatica.keys())
 
     for i, Ai in enumerate(non_terminals):
         for j in range(i):
             Aj = non_terminals[j]
             new_productions = []
 
-            for rhs in grammar[Ai]:
+            for rhs in gramatica[Ai]:
                 if rhs.startswith(Aj):
-                    for Aj_rhs in grammar[Aj]:
+                    for Aj_rhs in gramatica[Aj]:
                         new_productions.append(Aj_rhs + rhs[len(Aj):])
                 else:
                     new_productions.append(rhs)
 
-            grammar[Ai] = new_productions
+            gramatica[Ai] = new_productions
 
         new_productions = []
         direct_recursions = []
         
-        for rhs in grammar[Ai]:
+        for rhs in gramatica[Ai]:
             if rhs.startswith(Ai):
                 direct_recursions.append(rhs[len(Ai):])
             else:
@@ -109,16 +109,16 @@ def eliminate_left_recursion(grammar):
 
         if direct_recursions:
             Ai_prime = f"{Ai}'"
-            while Ai_prime in grammar:
+            while Ai_prime in gramatica:
                 Ai_prime += "'"
 
-            grammar[Ai] = [rhs + Ai_prime for rhs in new_productions]
-            grammar[Ai_prime] = [rhs + Ai_prime for rhs in direct_recursions] + ['']
+            gramatica[Ai] = [rhs + Ai_prime for rhs in new_productions]
+            gramatica[Ai_prime] = [rhs + Ai_prime for rhs in direct_recursions] + ['']
 
-    return grammar
+    return gramatica
 
-def to_gnf(grammar):
-    grammar = eliminate_left_recursion(grammar)
+def paraFNG(grammar):
+    grammar = eliminarRecursaoEsquerda(grammar)
     non_terminals = sorted(grammar.keys())
 
     for i, A in enumerate(non_terminals):
@@ -155,18 +155,18 @@ def to_gnf(grammar):
     return gnf_grammar
 
 
-def convert_to_gnf(input_file, output_file):
-    grammar = read_grammar(input_file)
-    print(grammar)
+def converterParaFNG(arquivoEntrada, arquivoSaida):
+    gramatica = lerGramatica(arquivoEntrada)
+    print(gramatica)
     # grammar = remove_unit_productions(grammar)
-    print(grammar)
-    grammar = to_cnf(grammar)
-    print(grammar)
-    grammar = to_gnf(grammar)
-    print(grammar)
-    write_grammar(output_file, grammar)
+    print(gramatica)
+    gramatica = to_cnf(gramatica)
+    print(gramatica)
+    gramatica = paraFNG(gramatica)
+    print(gramatica)
+    escreverGramatica(arquivoSaida, gramatica)
 
 # Example usage
 entrada = 'gramatica_limpa.txt'
 saida = 'gramaticaLimpaNaFNG.txt'
-convert_to_gnf(entrada, saida)
+converterParaFNG(entrada, saida)
